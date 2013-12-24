@@ -1,0 +1,13 @@
+; CLock_cpp.def
+; 定义Dll导出函数接口名
+
+LIBRARY	CLock
+
+EXPORTS
+	dv_connect	 @1
+	dv_disconnect	 @2
+	dv_verify_card	 @3
+	dv_get_auth_code @4
+	dv_read_card	 @5
+	dv_write_card	 @6
+;over
