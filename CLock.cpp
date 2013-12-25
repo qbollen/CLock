@@ -112,6 +112,53 @@ __int16	__stdcall dv_get_auth_code(unsigned char* auth /*lenght:6*/)
 	return SUCCESS;
 }
 
+__int16 __stdcall dv_get_card_number(unsigned char* cardno/*length:6*/)
+{
+	__int16 result;
+
+	__int16 type;
+
+	if((result = dv_verify_card(&type)) < 0)
+		return result;
+
+	unsigned char rd_data[96 + 1] = {0};
+
+	if ((result = dv_read(type, rd_data)) < 0)
+		return result;
+
+    //--
+
+	char card_type[4] = {0};
+	
+	strncpy(card_type, (char*)(rd_data + 6), 2);
+
+	if (strcmp(card_type,"0A") == 0)     //setup card
+	{
+		strncpy((char*)cardno, (char*)(rd_data + 32), 6);    
+	}
+	else if (strcmp(card_type, "0B") == 0)  //clock card
+	{
+		strncpy((char*)cardno, (char*)(rd_data + 24), 6);  
+	}
+	else if (strcmp(card_type, "0C") == 0)  //master card
+	{
+		strncpy((char*)cardno, (char*)(rd_data + 8), 6);
+	}
+	else if (strcmp(card_type, "0D") == 0 || strcmp(card_type, "0E") == 0) //guest card
+	{
+		strncpy((char*)cardno, (char*)(rd_data + 18), 6);
+	}
+	else
+	{
+		cardno = '\0';
+	}
+
+	//--
+
+
+	return SUCCESS;	
+}
+
 __int16 __stdcall dv_read_card(unsigned char* auth,
 							   unsigned char* cardno,
 							   unsigned char* building, 
@@ -440,6 +487,31 @@ __int16 __stdcall dv_write_card(unsigned char* auth,
 	data[25] = szday2;
 	data[26] = szmonth2;
 	data[27] = szyear2_2;
+
+	unsigned char rd_data[97] = {0};
+
+	parray_to_array(48, data, (char*)rd_data);
+
+	//write data
+	if ((result = dv_write(type, rd_data)) < 0)
+		return result;
+
+	dv_beep();
+
+	return SUCCESS;
+}
+
+__int16 __stdcall dv_delete_card()
+{
+	__int16 result;
+
+	//verify card
+	__int16 type;
+
+	if ((result = dv_verify_card(&type)) < 0)
+		return result;
+
+	char *data[] = {"00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","00","01","01","02","05"};
 
 	unsigned char rd_data[97] = {0};
 

@@ -95,6 +95,10 @@ LINK32=link.exe
 
 SOURCE=.\CLock.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\TestDll\DllCall.cpp
+# End Source File
 # End Group
 # Begin Group "Header Files"
 

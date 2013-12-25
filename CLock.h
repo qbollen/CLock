@@ -59,19 +59,25 @@ void			parray_to_array(__int16 length, char*parray[], char* array);
 __CLOCK_LIB_API	__int16 __stdcall dv_connect(__int16 beep);
 __CLOCK_LIB_API	__int16 __stdcall dv_disconnect();
 __CLOCK_LIB_API	__int16 __stdcall dv_verify_card(__int16* type);
-__CLOCK_LIB_API __int16	__stdcall dv_get_auth_code(unsigned char* auth /*lenght:6*/);
+__CLOCK_LIB_API __int16	__stdcall dv_get_auth_code(unsigned char* auth /*length:6*/);
+__CLOCK_LIB_API __int16 __stdcall dv_get_card_number(unsigned char* cardno/*length:6*/);
 __CLOCK_LIB_API __int16 __stdcall dv_read_card(unsigned char* auth,
 							   unsigned char* cardno,
 							   unsigned char* building, 
 							   unsigned char* room,
+							   unsigned char* commdoors,
 							   unsigned char* arrival, 
 							   unsigned char* departure);
 
 __CLOCK_LIB_API __int16 __stdcall dv_write_card(unsigned char* auth, 
 								unsigned char* building,
 								unsigned char* room,
+								unsigned char* commdoors,
 								unsigned char* arrival,
 								unsigned char* departure);
+
+__CLOCK_LIB_API __int16 __stdcall dv_delete_card();
+
 
 //functions end
 #undef __CLOCK_LIB_API
