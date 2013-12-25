@@ -50,7 +50,6 @@ void			invert(char* str);
 __int16			a_to_i(char s[]);
 void			int_to_hex(char* dec, char* hex);
 void			hex_to_int(char* hex, char* dec);
-__int16			dv_check_card();
 __int16			dv_read(__int16 type, unsigned char* rd_data /* length:96 */);
 __int16			dv_write(__int16 type, unsigned char* data /* length:96 */);
 void			parray_to_array(__int16 length, char*parray[], char* array);
@@ -58,6 +57,7 @@ void			parray_to_array(__int16 length, char*parray[], char* array);
 
 __CLOCK_LIB_API	__int16 __stdcall dv_connect(__int16 beep);
 __CLOCK_LIB_API	__int16 __stdcall dv_disconnect();
+__CLOCK_LIB_API __int16 __stdcall dv_check_card();
 __CLOCK_LIB_API	__int16 __stdcall dv_verify_card(__int16* type);
 __CLOCK_LIB_API __int16	__stdcall dv_get_auth_code(unsigned char* auth /*length:6*/);
 __CLOCK_LIB_API __int16 __stdcall dv_get_card_number(unsigned char* cardno/*length:6*/);

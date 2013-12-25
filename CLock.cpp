@@ -38,6 +38,33 @@ __int16 __stdcall dv_disconnect()
 	return dc_exit(_icdev);
 }
 
+__int16 __stdcall dv_check_card()
+{
+	//card type: 1 (ul), 2 (s50);
+	enum _type {unknow=-5, ul=1, m1=2};
+	enum _type card_type = unknow;
+
+	unsigned __int16 tagtype;
+
+	if (dc_request(_icdev, mode, &tagtype) !=0 )
+		return ERR_INTERFACE;
+
+	switch(tagtype)
+	{
+	case  4: 
+		card_type = m1;
+		break;
+	case 68: 
+		card_type = ul;
+		break;
+	default:
+		card_type = unknow;
+		break;
+	}
+
+	return card_type;
+}
+
 __int16 __stdcall dv_verify_card(__int16* type)
 {
 	__int16 result;
@@ -684,33 +711,6 @@ void hex_to_int(char* hex, char* dec)
 	}
 
 	sprintf(dec, "%2.2d", _int);
-}
-
-__int16 dv_check_card()
-{
-	//card type: 1 (ul), 2 (s50);
-	enum _type {unknow=-5, ul=1, m1=2};
-	enum _type card_type = unknow;
-
-	unsigned __int16 tagtype;
-
-	if (dc_request(_icdev, mode, &tagtype) !=0 )
-		return ERR_INTERFACE;
-
-	switch(tagtype)
-	{
-	case  4: 
-		card_type = m1;
-		break;
-	case 68: 
-		card_type = ul;
-		break;
-	default:
-		card_type = unknow;
-		break;
-	}
-
-	return card_type;
 }
 
 __int16 dv_read(__int16 type, unsigned char* rd_data /* length:96 */)
